@@ -1,26 +1,60 @@
 syntax = "proto3";
+
 package blog.blog;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "blog/blog/params.proto";
+import "blog/blog/post.proto";
 
 option go_package = "blog/x/blog/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/blog/blog/params";
+  
+  }
+  
+  // Queries a list of ShowPast items.
+  rpc ShowPast (QueryShowPastRequest) returns (QueryShowPastResponse) {
+    option (google.api.http).get = "/blog/blog/show_past/{id}";
+  
+  }
+  
+  // Queries a list of ListPost items.
+  rpc ListPost (QueryListPostRequest) returns (QueryListPostResponse) {
+    option (google.api.http).get = "/blog/blog/list_post";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryShowPastRequest {
+  uint64 id = 1;
+}
+
+message QueryShowPastResponse {
+  Post post = 1;
+}
+
+message QueryListPostRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListPostResponse {
+  Post                                   post       = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
