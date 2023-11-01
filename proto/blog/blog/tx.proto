@@ -1,0 +1,7 @@
+syntax = "proto3";
+package blog.blog;
+
+option go_package = "blog/x/blog/types";
+
+// Msg defines the Msg service.
+service Msg {}
