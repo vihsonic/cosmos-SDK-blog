@@ -1,7 +1,38 @@
 syntax = "proto3";
+
 package blog.blog;
 
 option go_package = "blog/x/blog/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreatePost (MsgCreatePost) returns (MsgCreatePostResponse);
+  rpc UpdatePost (MsgUpdatePost) returns (MsgUpdatePostResponse);
+  rpc DeletePost (MsgDeletePost) returns (MsgDeletePostResponse);
+}
+message MsgCreatePost {
+  string creator = 1;
+  string title   = 2;
+  string body    = 3;
+}
+
+message MsgCreatePostResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdatePost {
+  string creator = 1;
+  string title   = 2;
+  string body    = 3;
+  uint64 id      = 4;
+}
+
+message MsgUpdatePostResponse {}
+
+message MsgDeletePost {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeletePostResponse {}
+

@@ -23,7 +23,19 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreatePost = "op_weight_msg_create_post"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreatePost int = 100
+
+	opWeightMsgUpdatePost = "op_weight_msg_update_post"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdatePost int = 100
+
+	opWeightMsgDeletePost = "op_weight_msg_delete_post"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeletePost int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.
@@ -51,6 +63,39 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
+	var weightMsgCreatePost int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreatePost, &weightMsgCreatePost, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreatePost = defaultWeightMsgCreatePost
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreatePost,
+		blogsimulation.SimulateMsgCreatePost(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdatePost int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdatePost, &weightMsgUpdatePost, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdatePost = defaultWeightMsgUpdatePost
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdatePost,
+		blogsimulation.SimulateMsgUpdatePost(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeletePost int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeletePost, &weightMsgDeletePost, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeletePost = defaultWeightMsgDeletePost
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeletePost,
+		blogsimulation.SimulateMsgDeletePost(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -59,6 +104,30 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 // ProposalMsgs returns msgs used for governance proposals for simulations.
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
 	return []simtypes.WeightedProposalMsg{
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgCreatePost,
+			defaultWeightMsgCreatePost,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				blogsimulation.SimulateMsgCreatePost(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdatePost,
+			defaultWeightMsgUpdatePost,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				blogsimulation.SimulateMsgUpdatePost(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgDeletePost,
+			defaultWeightMsgDeletePost,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				blogsimulation.SimulateMsgDeletePost(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
 		// this line is used by starport scaffolding # simapp/module/OpMsg
 	}
 }
