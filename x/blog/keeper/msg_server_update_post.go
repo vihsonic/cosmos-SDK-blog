@@ -12,6 +12,12 @@ func (k msgServer) UpdatePost(goCtx context.Context, msg *types.MsgUpdatePost) (
 
 	// TODO: Handling the message
 	_ = ctx
-
-	return &types.MsgUpdatePostResponse{}, nil
+	var post = types.Post{
+        Creator: msg.Creator,
+        Title:   msg.Title,
+        Body:    msg.Body,
+		Id: msg.Id,
+    }
+    k.SetPost(ctx, post);
+    return &types.MsgUpdatePostResponse{}, nil
 }
