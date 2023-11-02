@@ -15,18 +15,21 @@ paths:
             type: object
             properties:
               post:
-                type: object
-                properties:
-                  title:
-                    type: string
-                  body:
-                    type: string
-                  creator:
-                    type: string
-                  id:
-                    type: string
-                    format: uint64
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    creator:
+                      type: string
+                    id:
+                      type: string
+                      format: uint64
               pagination:
+                title: Post                                   post       = 1;
                 type: object
                 properties:
                   next_key:
@@ -178,6 +181,7 @@ paths:
             type: object
             properties:
               post:
+                title: Post post = 1;
                 type: object
                 properties:
                   title:
@@ -46678,18 +46682,21 @@ definitions:
     type: object
     properties:
       post:
-        type: object
-        properties:
-          title:
-            type: string
-          body:
-            type: string
-          creator:
-            type: string
-          id:
-            type: string
-            format: uint64
+        type: array
+        items:
+          type: object
+          properties:
+            title:
+              type: string
+            body:
+              type: string
+            creator:
+              type: string
+            id:
+              type: string
+              format: uint64
       pagination:
+        title: Post                                   post       = 1;
         type: object
         properties:
           next_key:
@@ -46726,6 +46733,7 @@ definitions:
     type: object
     properties:
       post:
+        title: Post post = 1;
         type: object
         properties:
           title:

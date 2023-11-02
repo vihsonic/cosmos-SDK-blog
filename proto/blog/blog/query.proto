@@ -46,7 +46,8 @@ message QueryShowPastRequest {
 }
 
 message QueryShowPastResponse {
-  Post post = 1;
+  // Post post = 1;
+  Post post = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryListPostRequest {
@@ -54,7 +55,8 @@ message QueryListPostRequest {
 }
 
 message QueryListPostResponse {
-  Post                                   post       = 1;
+  repeated Post post = 1 [(gogoproto.nullable) = false];
+  // Post                                   post       = 1;
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
