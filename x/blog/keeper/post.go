@@ -1,6 +1,7 @@
 package keeper
 
 import (
+    "fmt"
     "encoding/binary"
 
     "blog/x/blog/types"
@@ -57,4 +58,9 @@ func (k Keeper) SetPost(ctx sdk.Context, post types.Post) {
     store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostKey))
     updatedValue := k.cdc.MustMarshal(&post)
     store.Set(GetPostIDBytes(post.Id), updatedValue)
+}
+
+func (k Keeper) RemovePost(ctx sdk.Context, id uint64) {
+    store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostKey))
+    store.Delete(GetPostIDBytes(id))
 }
